@@ -1,26 +1,50 @@
 import React from 'react';
-import logo from './logo.svg';
+import tachyons from 'tachyons';
 import './App.css';
+import Scroll from './Scroll'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+
+constructor(){
+	super();
+	this.state = {
+		joke:""
+	};
+	this.pressButton = this.pressButton.bind(this)
+}
+
+
+pressButton(){
+	fetch('https://api.chucknorris.io/jokes/random')
+	.then(response => response.json())
+	.then(randomJoke=> this.setState({joke: randomJoke.value}))
+	.catch(err =>{
+		console.log(err);
+	})
+}
+
+
+	render(){
+		return(
+			<div className ='tc ttu tracked'>
+			<Scroll>
+				<div className ='grow pointer ma2'>
+					<img alt ='chucknorris' src = "https://api.chucknorris.io/img/chucknorris_logo_coloured_small@2x.png"></img>
+				</div>
+					<p className='f4 w-60 mv5'>{this.state.joke}</p>
+					</Scroll>
+				<div id='b'>
+					<button className= 'tc pointer pa2' onClick = {this.pressButton}>
+					Generate a joke
+
+					</button>
+				</div>
+
+			</div>
+
+			)
+	}
+
 }
 
 export default App;
